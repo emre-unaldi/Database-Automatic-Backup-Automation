@@ -1,0 +1,31 @@
+{
+  "menu": [
+    {
+      "url": "/",
+      "name": "Dashboard",
+      "icon": "menu-icon tf-icons bx bx-home-circle",
+      "slug": "dashboard-analytics"
+    },
+    {
+      "menuHeader": "Databases"
+    },
+    {
+      "name": "AWS",
+      "icon": "menu-icon tf-icons bx bxs-data",
+      "slug": "AWS",
+      "url": "/database/aws"
+    },
+    {
+      "name": "Azure",
+      "icon": "menu-icon tf-icons bx bxs-data",
+      "slug": "Azure",
+      "url": "/database/azure"
+    },
+    {
+      "name": "TurkcellDC",
+      "icon": "menu-icon tf-icons bx bxs-data",
+      "slug": "TurkcellDC",
+      "url": "/database/turkcelldc"
+    }
+  ]
+}
