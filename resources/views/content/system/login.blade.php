@@ -32,7 +32,7 @@
             <div class="mb-3 form-password-toggle">
               <div class="d-flex justify-content-between">
                 <label class="form-label" for="password">Password</label>
-                <a href="{{url('user/forgotPassword')}}">
+                <a href="{{url('/forgotPassword')}}">
                   <small>Forgot Password?</small>
                 </a>
               </div>
@@ -56,7 +56,7 @@
 
           <p class="text-center">
             <span>New on our platform?</span>
-            <a href="{{url('user/register')}}">
+            <a href="{{url('/register')}}">
               <span>Create an account</span>
             </a>
           </p>
