@@ -26,7 +26,7 @@
           <h4 class="mb-2">Adventure starts here 🚀</h4>
           <p class="mb-4">Make your app management easy and fun!</p>
 
-          <form id="formAuthentication" class="mb-3" action="{{url('user/login')}}" method="GET">
+          <form id="formAuthentication" class="mb-3" action="{{url('/login')}}" method="GET">
             <div class="mb-3">
               <label for="username" class="form-label">Username</label>
               <input type="text" class="form-control" id="username" name="username" placeholder="Enter your username" autofocus>
@@ -59,7 +59,7 @@
 
           <p class="text-center">
             <span>Already have an account?</span>
-            <a href="{{url('user/login')}}">
+            <a href="{{url('/login')}}">
               <span>Sign in instead</span>
             </a>
           </p>

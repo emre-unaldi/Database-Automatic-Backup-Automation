@@ -7,25 +7,31 @@
       "slug": "dashboard-analytics"
     },
     {
+      "menuHeader": "Clusters"
+    },
+    {
+      "name": "Clusters",
+      "icon": "menu-icon tf-icons bx bxs-data",
+      "slug": "Clusters",
+      "url": "/clusters"
+    },
+    {
       "menuHeader": "Databases"
     },
     {
-      "name": "AWS",
+      "name": "Databases",
       "icon": "menu-icon tf-icons bx bxs-data",
-      "slug": "AWS",
-      "url": "/database/aws"
+      "slug": "Databases",
+      "url": "/databases"
     },
     {
-      "name": "Azure",
-      "icon": "menu-icon tf-icons bx bxs-data",
-      "slug": "Azure",
-      "url": "/database/azure"
+      "menuHeader": "Users"
     },
     {
-      "name": "TurkcellDC",
+      "name": "Users",
       "icon": "menu-icon tf-icons bx bxs-data",
-      "slug": "TurkcellDC",
-      "url": "/database/turkcelldc"
+      "slug": "Users",
+      "url": "/users"
     }
   ]
 }

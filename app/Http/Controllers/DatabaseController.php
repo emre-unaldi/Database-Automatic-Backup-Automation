@@ -6,15 +6,11 @@ use Illuminate\Http\Request;
 
 class DatabaseController extends Controller
 {
-    public function aws() {
-        return view('content.databases.aws');
+    public function index() {
+        return view('content.databases.list');
     }
 
-    public function azure() {
-        return view('content.databases.azure');
-    }
-
-    public function turkcelldc() {
-        return view('content.databases.turkcelldc');
+    public function notFound() {
+        return view('content.databases.notFound');
     }
 }

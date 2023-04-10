@@ -64,7 +64,7 @@ $navbarDetached = ($navbarDetached ?? '');
                 <div class="dropdown-divider"></div>
               </li>
               <li>
-                <a class="dropdown-item" href="{{url('user/account')}}">
+                <a class="dropdown-item" href="{{url('/users/profile')}}">
                   <i class="bx bx-user me-2"></i>
                   <span class="align-middle">Profile</span>
                 </a>
@@ -73,7 +73,7 @@ $navbarDetached = ($navbarDetached ?? '');
                 <div class="dropdown-divider"></div>
               </li>
               <li>
-                <a class="dropdown-item" href="{{url('user/login')}}">
+                <a class="dropdown-item" href="{{url('/login')}}">
                   <i class='bx bx-power-off me-2'></i>
                   <span class="align-middle">Log Out</span>
                 </a>

@@ -1,29 +1,43 @@
 <?php
 
+use App\Http\Controllers\ClusterController;
 use App\Http\Controllers\DatabaseController;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\HomeController;
+use App\Http\Controllers\SystemController;
 use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Route;
 
-// Main Page Route
-Route::get('/', [HomeController::class, 'index']);
-
-// Databases Route
-Route::prefix('database')->group(function() {
-    Route::get('/aws', [DatabaseController::class, 'aws']);
-    Route::get('/azure', [DatabaseController::class, 'azure']);
-    Route::get('/turkcelldc', [DatabaseController::class, 'turkcelldc']);
-    Route::fallback([HomeController::class, 'notFoundPage']);
+// System Routes
+Route::prefix('/')->group(function() {
+    Route::get('/', [SystemController::class, 'index']);
+    Route::get('/login', [SystemController::class, 'login']);
+    Route::get('/register', [SystemController::class, 'register']);
+    Route::get('/forgotPassword', [SystemController::class, 'forgotPassword']);
+    Route::fallback([SystemController::class, 'notFound']);
 });
 
-// User Profile Route
-Route::prefix('user')->group(function() {
-    Route::get('account', [UserController::class, 'index']);
-    Route::get('/login', [UserController::class, 'login']);
-    Route::get('/register', [UserController::class, 'register']);
-    Route::get('/forgotPassword', [UserController::class, 'forgotPassword']);
-    Route::fallback([HomeController::class, 'notFoundPage']);
+// Cluster Routes
+Route::prefix('clusters')->group(function() {
+    Route::get('/',[ClusterController::class, 'getAllClusters']);
+    Route::post('/create', [ClusterController::class, 'createCluster'])->name('clusters.create');
+    Route::post('/update', [ClusterController::class, 'updateClusterById'])->name('clusters.update');
+    Route::post('/delete', [ClusterController::class, 'deleteClusterById'])->name('clusters.delete');
+    Route::fallback([ClusterController::class, 'notFound']);
 });
 
-// Not Found Page
-Route::fallback([HomeController::class, 'notFoundPage']);
+// Database Routes
+Route::prefix('databases')->group(function() {
+    Route::get('/',[DatabaseController::class, 'index']);
+    Route::fallback([DatabaseController::class, 'notFound']);
+});
+
+// User Routes
+Route::prefix('users')->group(function() {
+    Route::get('/',[UserController::class, 'getAllUsers']);
+    Route::post('/create', [UserController::class, 'createUser'])->name('users.create');
+    Route::post('/update', [UserController::class, 'updateUserById'])->name('users.update');
+    Route::post('/delete', [UserController::class, 'deleteUserById'])->name('users.delete');
+    Route::get('/profile',[UserController::class, 'profile']);
+    Route::fallback([UserController::class, 'notFound']);
+});
+
+
