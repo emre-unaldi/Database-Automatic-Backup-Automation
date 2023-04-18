@@ -21,7 +21,7 @@
           </div>
           <div class="row g-2">
             <div class="col mb-2">
-              <label for="cluster" class="form-label">Cluster</label>
+              <label for="cluster" class="form-label">Cluster Name</label>
               <input type="text" id="cluster" name="cluster" class="form-control" placeholder="...">
             </div>
             <div class="col mb-2">

@@ -26,7 +26,10 @@ Route::prefix('clusters')->group(function() {
 
 // Database Routes
 Route::prefix('databases')->group(function() {
-    Route::get('/',[DatabaseController::class, 'index']);
+    Route::get('/',[DatabaseController::class, 'getAllDatabases']);
+    Route::post('/create', [DatabaseController::class, 'createDatabase'])->name('databases.create');
+    Route::post('/update', [DatabaseController::class, 'updateDatabaseById'])->name('databases.update');
+    Route::post('/delete', [DatabaseController::class, 'deleteDatabaseById'])->name('databases.delete');
     Route::fallback([DatabaseController::class, 'notFound']);
 });
 
