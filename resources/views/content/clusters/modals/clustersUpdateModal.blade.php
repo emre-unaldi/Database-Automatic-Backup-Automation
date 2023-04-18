@@ -22,7 +22,7 @@
           </div>
           <div class="row g-2">
             <div class="col mb-2">
-              <label for="u_cluster" class="form-label">Cluster</label>
+              <label for="u_cluster" class="form-label">Cluster Name</label>
               <input type="text" id="u_cluster" name="u_cluster" class="form-control">
             </div>
             <div class="col mb-2">

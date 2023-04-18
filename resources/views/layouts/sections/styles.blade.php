@@ -13,6 +13,9 @@
 
 <link rel="stylesheet" href="{{ asset(mix('assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css')) }}" />
 
+<!-- Datatable CSS -->
+<link rel="stylesheet" href="https://cdn.datatables.net/v/bs5/jq-3.6.0/jszip-2.5.0/dt-1.13.4/af-2.5.3/b-2.3.6/b-colvis-2.3.6/b-html5-2.3.6/b-print-2.3.6/date-1.4.0/kt-2.8.2/r-2.4.1/sc-2.1.1/sl-1.6.2/datatables.min.css" />
+
 <!-- Vendor Styles -->
 @yield('vendor-style')
 

@@ -3,9 +3,20 @@
 * File include item demo only specific css only
 ******************************************************************************/
 
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .menu .app-brand.demo {
   height: 64px;
   margin-top: 12px;
+  padding-bottom: 40px;
+}
+
+.app-brand-logo{
+  padding-top: 10px;
 }
 
 .app-brand-logo.demo svg {

@@ -4,19 +4,19 @@
   <span class="text-muted fw-light">Clusters</span>
 </h4>
 <!-- Clusters Table -->
-<div class="card">
+<div class="card p-2">
+  <div class="table-responsive text-nowrap">
   <!-- Cluster Add Modal Open Button -->
-  <div class="d-flex justify-content-end pt-3 pe-3">
+  <div class="d-flex justify-content-end">
     <button type="button" class="btn btn-icon btn-success" data-bs-toggle="modal" data-bs-target="#clusterAddModal">
       <span class="tf-icons bx bx-plus-medical"></span>
     </button>
   </div>
   <!-- Cluster Add Modal Open Button -->
-  <div class="table-responsive text-nowrap">
-    <table class="table table-striped">
+    <table id="clustersTable" class="table table-striped">
       <thead>
         <tr>
-          <th>Cluster</th>
+          <th>Cluster Name</th>
           <th>IP</th>
           <th>Port</th>
           <th>User</th>
@@ -74,6 +74,13 @@
 <!-- Cluster Update Modal -->
 
 <script>
+  $('#clustersTable').DataTable({
+    dom: '<"top"lBf>rt<"bottom"ip><"clear">',
+    buttons: [
+      'excel', 'pdf', 'print'
+    ]
+  });
+
   const getClusters = (id) => {
     const clusters = <?php echo json_encode($clusters);  ?>;
     const getClusters = clusters.find((item) => item?.id == id)

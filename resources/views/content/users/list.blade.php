@@ -4,16 +4,16 @@
   <span class="text-muted fw-light">Users</span>
 </h4>
 <!-- Users Table -->
-<div class="card">
-  <!-- User Add Modal Open Button -->
-  <div class="d-flex justify-content-end pt-3 pe-3">
-    <button type="button" class="btn btn-icon btn-success" data-bs-toggle="modal" data-bs-target="#userAddModal">
-      <span class="tf-icons bx bx-plus-medical"></span>
-    </button>
-  </div>
-  <!-- User Add Modal Open Button -->
+<div class="card p-2">
   <div class="table-responsive text-nowrap">
-    <table class="table table-striped">
+    <!-- User Add Modal Open Button -->
+    <div class="d-flex justify-content-end">
+      <button type="button" class="btn btn-icon btn-success" data-bs-toggle="modal" data-bs-target="#userAddModal">
+        <span class="tf-icons bx bx-plus-medical"></span>
+      </button>
+    </div>
+    <!-- User Add Modal Open Button -->
+    <table id="usersTable" class="table table-striped">
       <thead>
         <tr>
           <th>Name</th>
@@ -72,6 +72,13 @@
 <!-- User Update Modal -->
 
 <script>
+  $('#usersTable').DataTable({
+    dom: '<"top"lBf>rt<"bottom"ip><"clear">',
+    buttons: [
+      'excel', 'pdf', 'print'
+    ]
+  });
+
   const getUsers = (id) => {
     const users = <?php echo json_encode($users);  ?>;
     const getUser = users.find((item) => item?.id == id)
