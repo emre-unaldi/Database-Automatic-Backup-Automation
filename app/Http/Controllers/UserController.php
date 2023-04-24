@@ -2,35 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Users;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
     public function getAllUsers() {
-        $users = Users::get();
+        $users = User::get();
         return view('content.users.list')->with('users', $users);
     }
 
     public function deleteUserById(Request $request) {
-        $users = Users::find($request->id);
+        $users = User::find($request->id);
         $users->delete();
         return redirect('/users');
     }
 
-    public function createUser(Request $request) {
-        $users = new Users();
-        $users->name = $request->name;
-        $users->surname = $request->surname;
-        $users->phone = $request->phone;
-        $users->email = $request->email;
-        $users->password = $request->password;
-        $users->save();
-        return redirect('/users');
-    }
-
     public function updateUserById(Request $request) {
-        $users = Users::find($request->u_user_id);
+        $users = User::find($request->u_user_id);
         $users->name = $request->u_name;
         $users->surname = $request->u_surname;
         $users->phone = $request->u_phone;
