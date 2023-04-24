@@ -6,19 +6,10 @@
 <!-- Users Table -->
 <div class="card p-2">
   <div class="table-responsive text-nowrap">
-    <!-- User Add Modal Open Button -->
-    <div class="d-flex justify-content-end">
-      <button type="button" class="btn btn-icon btn-success" data-bs-toggle="modal" data-bs-target="#userAddModal">
-        <span class="tf-icons bx bx-plus-medical"></span>
-      </button>
-    </div>
-    <!-- User Add Modal Open Button -->
     <table id="usersTable" class="table table-striped">
       <thead>
         <tr>
           <th>Name</th>
-          <th>Surname</th>
-          <th>Phone</th>
           <th>Email</th>
           <th>Password</th>
           <th>Actions</th>
@@ -30,8 +21,6 @@
         @foreach($users as $key => $user)
         <tr>
           <td>{{$user->name}}</td>
-          <td>{{$user->surname}}</td>
-          <td>{{$user->phone}}</td>
           <td>{{$user->email}}</td>
           <td>{{$user->password}}</td>
           <td class="d-flex justify-content-start">
@@ -62,10 +51,6 @@
   </div>
 </div>
 <!--/ Users Table -->
-
-<!-- User Add Modal -->
-@include('content/users/modals/usersCreateModal')
-<!-- User Add Modal -->
 
 <!-- User Update Modal -->
 @include('content/users/modals/usersUpdateModal')
