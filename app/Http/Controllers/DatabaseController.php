@@ -61,13 +61,15 @@ class DatabaseController extends Controller
         $user = $databases->user;
         $password = $databases->password;
         $backup_max_count = $databases->backup_max_count;
-        $backupDate = explode(" ", $databases->updated_at);
+        $DateTimeNow = date('Y-m-d H:i:s');
+        $backupDate = explode(" ", $DateTimeNow);
         $backupDateTime = explode(":", $backupDate[1]);
         $host = '127.0.0.1';
         $port = '3306';
 
+
         // son yedek tarihini kaydetme
-        $databases->last_backup = $databases->updated_at;
+        $databases->last_backup = $DateTimeNow;
         $databases->save();
 
         // veritabanına ait dosyaları bulma

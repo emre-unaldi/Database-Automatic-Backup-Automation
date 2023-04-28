@@ -24,7 +24,7 @@
             <div class="col mb-2">
               <label for="uc_name" class="form-label">Cluster Name</label>
               <select class="form-select" id="uc_name" name="uc_name" aria-label="Default select example">
-              <option>NULL</option>
+              <option>No Clusters</option>
                 @foreach($clusterFilter as $cluster)
                   <option>{{ $cluster }}</option>
                 @endforeach

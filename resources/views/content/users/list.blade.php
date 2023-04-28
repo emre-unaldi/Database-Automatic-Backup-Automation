@@ -6,11 +6,20 @@
 <!-- Users Table -->
 <div class="card p-2">
   <div class="table-responsive text-nowrap">
+    <!-- Database Add Modal Open Button -->
+    <div class="d-flex justify-content-end">
+      <button type="button" class="btn btn-icon btn-success" data-bs-toggle="modal" data-bs-target="#userAddModal">
+        <span class="tf-icons bx bx-plus-medical"></span>
+      </button>
+    </div>
+    <!-- Database Add Modal Open Button -->
     <table id="usersTable" class="table table-striped">
       <thead>
         <tr>
           <th>Name</th>
+          <th>Surname</th>
           <th>Email</th>
+          <th>Phone</th>
           <th>Password</th>
           <th>Actions</th>
         </tr>
@@ -21,10 +30,12 @@
         @foreach($users as $key => $user)
         <tr>
           <td>{{$user->name}}</td>
+          <td>{{$user->surname}}</td>
           <td>{{$user->email}}</td>
+          <td>{{$user->phone}}</td>
           <td>
-            <div class="form-password-toggle w-50">
-              <div class="input-group input-group-merge ">
+            <div class="form-password-toggle">
+              <div class="input-group input-group-merge">
                 <input readonly type="password" class="form-control border-0 bg-transparent" id="password" name="password" value="{{$user->decryptPassword}}" />
                 <span class="input-group-text cursor-pointer border-0 bg-transparent" id="password"><i class="bx bx-hide"></i></span>
               </div>
@@ -59,9 +70,14 @@
 </div>
 <!--/ Users Table -->
 
+<!-- User Add Modal -->
+@include('content/users/modals/usersCreateModal')
+<!-- User Add Modal -->
+
 <!-- User Update Modal -->
 @include('content/users/modals/usersUpdateModal')
 <!-- User Update Modal -->
+
 
 <script>
   $('#usersTable').DataTable({
@@ -85,7 +101,7 @@
     u_surname.setAttribute('value', getUser.surname)
     u_phone.setAttribute('value', getUser.phone)
     u_email.setAttribute('value', getUser.email)
-    u_password.setAttribute('value', getUser.password)
+    u_password.setAttribute('value', getUser.decryptPassword)
     u_user_id.setAttribute('value', id)
   }
 </script>
