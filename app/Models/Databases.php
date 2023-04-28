@@ -9,5 +9,5 @@ class Databases extends Model
 {
     use HasFactory;
     protected  $table = 'databases';
-    protected $fillable = ['c_name', 'db_name', 'ip', 'port', 'user', 'password', 'last_backup', 'period_hour'];
+    protected $fillable = ['c_name', 'db_name', 'ip', 'port', 'user', 'password', 'last_backup', 'period_hour', 'backup_max_count'];
 }

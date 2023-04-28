@@ -26,6 +26,7 @@ Route::prefix('databases')->group(function() {
     Route::post('/create', [DatabaseController::class, 'createDatabase'])->name('databases.create');
     Route::post('/update', [DatabaseController::class, 'updateDatabaseById'])->name('databases.update');
     Route::post('/delete', [DatabaseController::class, 'deleteDatabaseById'])->name('databases.delete');
+    Route::post('/backup', [DatabaseController::class, 'backupDatabaseById'])->name('databases.backup');
     Route::fallback([DatabaseController::class, 'notFound']);
 });
 

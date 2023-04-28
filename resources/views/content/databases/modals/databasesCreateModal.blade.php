@@ -1,11 +1,11 @@
 @php
-  $clusterFilter = [];
+$clusterFilter = [];
 
-  foreach($clusters as $item) {
-    if(!in_array($item->cluster, $clusterFilter)) {
-        array_push($clusterFilter, $item->cluster);
-      }
-    }
+foreach($clusters as $item) {
+if(!in_array($item->cluster, $clusterFilter)) {
+array_push($clusterFilter, $item->cluster);
+}
+}
 @endphp
 
 <!-- Database Add Modal -->
@@ -25,9 +25,9 @@
               <select class="form-select" id="c_name" name="c_name" aria-label="Default select example">
                 <option>NULL</option>
                 @foreach($clusterFilter as $cluster)
-                  <option value="{{ $cluster }}">{{ $cluster }}</option>
+                <option value="{{ $cluster }}">{{ $cluster }}</option>
                 @endforeach
-              </select>            
+              </select>
             </div>
             <div class="col mb-2">
               <label for="db_name" class="form-label">Database Name</label>
@@ -64,7 +64,19 @@
             </div>
             <div class="col mb-2">
               <label for="period_hour" class="form-label">Period Hour</label>
-              <input type="text" id="period_hour" name="period_hour" class="form-control" placeholder="...">
+              <div class="input-group">
+                <input type="number" id="period_hour" name="period_hour" class="form-control" placeholder=".." aria-describedby="period_hour" aria-label="period_hour" />
+                <span class="input-group-text" id="period_hour">Hour</span>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col mb-2">
+              <label for="backup_max_count" class="form-label">Backup Max Count</label>
+              <div class="input-group">
+                <input type="number" id="backup_max_count" name="backup_max_count" class="form-control" placeholder=".." aria-describedby="backup_max_count" aria-label="backup_max_count" />
+                <span class="input-group-text" id="backup_max_count">Records</span>
+              </div>
             </div>
           </div>
         </div>

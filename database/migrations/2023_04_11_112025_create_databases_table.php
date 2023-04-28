@@ -21,6 +21,7 @@ return new class extends Migration
             $table->integer('port');
             $table->string('user');
             $table->string('password');
+            $table->string('backup_max_count');
             $table->string('last_backup');
             $table->string('period_hour');
             $table->timestamps();
