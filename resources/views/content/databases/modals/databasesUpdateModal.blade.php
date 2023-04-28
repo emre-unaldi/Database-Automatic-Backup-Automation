@@ -42,7 +42,7 @@
             </div>
             <div class="col mb-2">
               <label for="u_port" class="form-label">Port</label>
-              <input type="text" id="u_port" name="u_port" class="form-control" placeholder="...">
+              <input type="number" id="u_port" name="u_port" class="form-control" placeholder="...">
             </div>
           </div>
           <div class="row g-2">
@@ -65,7 +65,19 @@
             </div>
             <div class="col mb-2">
               <label for="u_period_hour" class="form-label">Period Hour</label>
-              <input type="text" id="u_period_hour" name="u_period_hour" class="form-control" placeholder="...">
+              <div class="input-group">
+                <input type="number" id="u_period_hour" name="u_period_hour" class="form-control" placeholder=".." aria-describedby="u_period_hour" aria-label="u_period_hour" />
+                <span class="input-group-text" id="u_period_hour">Hour</span>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col mb-2">
+              <label for="u_backup_max_count" class="form-label">Backup Max Count</label>
+              <div class="input-group">
+                <input type="number" id="u_backup_max_count" name="u_backup_max_count" class="form-control" placeholder=".." aria-describedby="u_backup_max_count" aria-label="u_backup_max_count" />
+                <span class="input-group-text" id="u_backup_max_count">Records</span>
+              </div>
             </div>
           </div>
         </div>

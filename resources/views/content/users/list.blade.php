@@ -22,7 +22,14 @@
         <tr>
           <td>{{$user->name}}</td>
           <td>{{$user->email}}</td>
-          <td>{{$user->password}}</td>
+          <td>
+            <div class="form-password-toggle w-50">
+              <div class="input-group input-group-merge ">
+                <input readonly type="password" class="form-control border-0 bg-transparent" id="password" name="password" value="{{$user->decryptPassword}}" />
+                <span class="input-group-text cursor-pointer border-0 bg-transparent" id="password"><i class="bx bx-hide"></i></span>
+              </div>
+            </div>
+          </td>
           <td class="d-flex justify-content-start">
             <!-- User Delete Button -->
             <form class="pe-2" action="{{ route('users.delete', ['id'=>$user->id]) }}" method="POST">

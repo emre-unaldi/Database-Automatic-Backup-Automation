@@ -6,13 +6,13 @@
 <!-- Clusters Table -->
 <div class="card p-2">
   <div class="table-responsive text-nowrap">
-  <!-- Cluster Add Modal Open Button -->
-  <div class="d-flex justify-content-end">
-    <button type="button" class="btn btn-icon btn-success" data-bs-toggle="modal" data-bs-target="#clusterAddModal">
-      <span class="tf-icons bx bx-plus-medical"></span>
-    </button>
-  </div>
-  <!-- Cluster Add Modal Open Button -->
+    <!-- Cluster Add Modal Open Button -->
+    <div class="d-flex justify-content-end">
+      <button type="button" class="btn btn-icon btn-success" data-bs-toggle="modal" data-bs-target="#clusterAddModal">
+        <span class="tf-icons bx bx-plus-medical"></span>
+      </button>
+    </div>
+    <!-- Cluster Add Modal Open Button -->
     <table id="clustersTable" class="table table-striped">
       <thead>
         <tr>
@@ -34,7 +34,14 @@
           <td><span class="badge bg-label-secondary me-1">{{$cluster->ip}}</span></td>
           <td><span class="badge bg-label-primary me-1">{{$cluster->port}}</span></td>
           <td>{{$cluster->user}}</td>
-          <td>{{$cluster->password}}</td>
+          <td>
+            <div class="form-password-toggle w-50">
+              <div class="input-group input-group-merge">
+                <input readonly type="password" class="form-control border-0 bg-transparent" id="password" name="password" value="{{$cluster->password}}" />
+                <span class="input-group-text cursor-pointer border-0 bg-transparent" id="password"><i class="bx bx-hide"></i></span>
+              </div>
+            </div>
+          </td>
           <td>{{$cluster->description}}</td>
           <td class="d-flex justify-content-start">
             <!-- Clusters Delete Button -->
