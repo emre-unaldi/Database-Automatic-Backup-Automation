@@ -3,14 +3,19 @@
 use App\Http\Controllers\ClusterController;
 use App\Http\Controllers\DatabaseController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-Auth::routes();
-Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+// General Routes
+Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [LoginController::class, 'login']);
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+Route::fallback([LoginController::class, 'notFound']);
 
 Route::middleware('auth')->group(function() {
-    
 // Cluster Routes
 Route::prefix('clusters')->group(function() {
     Route::get('/',[ClusterController::class, 'getAllClusters']);
@@ -19,7 +24,6 @@ Route::prefix('clusters')->group(function() {
     Route::post('/delete', [ClusterController::class, 'deleteClusterById'])->name('clusters.delete');
     Route::fallback([ClusterController::class, 'notFound']);
 });
-
 // Database Routes
 Route::prefix('databases')->group(function() {
     Route::get('/',[DatabaseController::class, 'getAllDatabases']);
@@ -29,15 +33,14 @@ Route::prefix('databases')->group(function() {
     Route::post('/backup', [DatabaseController::class, 'backupDatabaseById'])->name('databases.backup');
     Route::fallback([DatabaseController::class, 'notFound']);
 });
-
 // User Routes
 Route::prefix('users')->group(function() {
     Route::get('/',[UserController::class, 'getAllUsers']);
+    Route::post('/create', [UserController::class, 'createUser'])->name('users.create');
     Route::post('/update', [UserController::class, 'updateUserById'])->name('users.update');
     Route::post('/delete', [UserController::class, 'deleteUserById'])->name('users.delete');
     Route::get('/profile',[UserController::class, 'profile']);
     Route::fallback([UserController::class, 'notFound']);
 });
-
 });
 
