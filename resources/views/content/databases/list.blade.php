@@ -114,6 +114,7 @@
   }, 5000);
 
   const getDatabases = (id) => {
+    // @JSON($databases)
     const databases = <?php echo json_encode($databases);  ?>;
     const getDatabases = databases.find((item) => item?.id == id)
     const uc_name = document.getElementById('uc_name');

@@ -22,7 +22,7 @@ array_push($clusterFilter, $item->cluster);
           <div class="row g-2">
             <div class="col mb-2">
               <label for="c_name" class="form-label">Cluster Name</label>
-              <select class="form-select" id="c_name" name="c_name" aria-label="Default select example">
+              <select class="form-select" id="c_name" name="c_name" onchange="setClusterOnChange()" aria-label="Default select example">
                 <option>No Clusters</option>
                 @foreach($clusterFilter as $cluster)
                 <option value="{{ $cluster }}">{{ $cluster }}</option>
@@ -33,6 +33,9 @@ array_push($clusterFilter, $item->cluster);
               <label for="db_name" class="form-label">Database Name</label>
               <input type="text" id="db_name" name="db_name" class="form-control" placeholder="...">
             </div>
+          </div>
+          <div>
+            <input type="hidden" id="selectedCluster" name="selectedCluster" class="form-control" value="false">
           </div>
           <div class="row g-2">
             <div class="col mb-2">
@@ -52,7 +55,7 @@ array_push($clusterFilter, $item->cluster);
             <div class="form-password-toggle col mb-2">
               <label class="form-label" for="password">Password</label>
               <div class="input-group input-group-merge">
-                <input type="password" class="form-control" id="password" name="password" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" aria-describedby="basic-default-password" />
+                <input type="password" class="form-control getPassword" id="password" name="password" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" aria-describedby="basic-default-password" />
                 <span class="input-group-text cursor-pointer" id="password"><i class="bx bx-hide"></i></span>
               </div>
             </div>
@@ -89,3 +92,45 @@ array_push($clusterFilter, $item->cluster);
   </div>
 </div>
 <!-- Database Add Modal -->
+
+<script>
+  const setClusterOnChange = (e) => {
+    const clusters = <?php echo json_encode($clusters);  ?>;
+    const c_name = document.getElementById('c_name');
+    const ip = document.getElementById('ip');
+    const port = document.getElementById('port');
+    const user = document.getElementById('user');
+    const password = document.getElementsByClassName('getPassword')[0];
+    const selectedCluster = document.getElementById('selectedCluster');
+    const empty = '';
+
+    for (var i = 0; i < clusters.length; i++) {
+      if (clusters[i].cluster === c_name.value) {
+        ip.value = clusters[i].ip;
+        port.value = clusters[i].port;
+        user.value = clusters[i].user;
+        password.value = clusters[i].password;
+        selectedCluster.value = true;
+
+        ip.disabled = true;
+        port.disabled = true;
+        user.disabled = true;
+        password.disabled = true;
+
+        break;
+      } else {
+        ip.value = empty;
+        port.value = empty;
+        user.value = empty;
+        password.value = empty;
+        selectedCluster.value = false;
+
+        ip.disabled = false;
+        port.disabled = false;
+        user.disabled = false;
+        password.disabled = false;
+
+      }
+    }
+  }
+</script>

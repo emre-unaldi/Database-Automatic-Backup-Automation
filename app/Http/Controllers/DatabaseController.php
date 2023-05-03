@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Clusters;
 use App\Models\Databases;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 
@@ -61,44 +62,56 @@ class DatabaseController extends Controller
         $user = $databases->user;
         $password = $databases->password;
         $backup_max_count = $databases->backup_max_count;
-        $DateTimeNow = date('Y-m-d H:i:s');
-        $backupDate = explode(" ", $DateTimeNow);
-        $backupDateTime = explode(":", $backupDate[1]);
-        $host = '127.0.0.1';
-        $port = '3306';
+        $last_backup = $databases->last_backup;
+        $period_hour = explode(' ', $databases->period_hour)[0];
+        $host = $databases->ip;
+        $port = $databases->port;
 
+        // Dosya adı için gün-ay-yıl_saat-dakika oluşturma
+        $dateTimeNow = new DateTime();
+        $backupDate = $dateTimeNow->format('d').'-'.$dateTimeNow->format('m').'-'.$dateTimeNow->format('Y');
+        $backupTime = $dateTimeNow->format('H').'-'.$dateTimeNow->format('i');
 
-        // son yedek tarihini kaydetme
-        $databases->last_backup = $DateTimeNow;
-        $databases->save();
+        // Period hour hesaplama için last_backup ile şimdiki zamanın farkını alma
+        $lastBackupFormated = new DateTime($last_backup);
+        $dateTimeDiff = $dateTimeNow->diff($lastBackupFormated);
 
-        // veritabanına ait dosyaları bulma
-        $backupPath = storage_path('app/public/backup');
-        $files = File::glob($backupPath . '/*_' . $db_name . '_backup.tar.gz');
-        $files = array_combine($files, array_map('filemtime', $files));
-        arsort($files);
+        if ($dateTimeDiff->i >= intval($period_hour) || $last_backup == null) {
+            // veritabanına ait dosyaları bulma
+            $backupPath = storage_path('app/public/backup');
+            $files = File::glob($backupPath . '/*_' . $db_name . '_backup.tar.gz');
+            $files = array_combine($files, array_map('filemtime', $files));
+            arsort($files);
 
-        // veritabanı yedek tutma sayısını kontrol etme ve 
-        if (!empty($files) && count($files) >= intval($backup_max_count)) {
-            $oldestFile = array_keys($files)[count($files) - 1];
-            File::delete($oldestFile);
+            // veritabanı yedek tutma sayısını kontrol etme ve 
+            if (!empty($files) && count($files) >= intval($backup_max_count)) {
+                $oldestFile = array_keys($files)[count($files) - 1];
+                File::delete($oldestFile);
+            }
+
+            // veritabanı .sql dosyasını yedek alma
+            $backupSqlFile = "app/public/backup/{$db_name}_backup.sql";
+            $backupSqlFilePath = storage_path($backupSqlFile);
+            $command = "mysqldump --user={$user} --password={$password} --host={$host} --port={$port} {$db_name} > {$backupSqlFilePath}";
+            shell_exec($command);
+
+            // yedeklenen veritabanını tar.gz olarak sıkıştırıp .sql yedek dosyasını silme
+            $backupTarGzFile = "app/public/backup/{$backupDate}_{$backupTime}_{$db_name}_backup.tar.gz";
+            $backupTarGzFileDir = "C:/Users/Emre/Desktop/backup/storage/app/public/backup";
+            $backupTarGzFilePath = storage_path($backupTarGzFile);
+            $command = "tar -czvf {$backupTarGzFilePath} --directory={$backupTarGzFileDir} {$db_name}_backup.sql";
+            shell_exec($command);
+            File::delete($backupSqlFilePath);
+
+            // son yedek tarihini kaydetme
+            $databases->last_backup = $dateTimeNow;
+            $databases->save();
+        
+            return redirect('/databases')->with('status', "{$db_name} veritabanı yedeği alındı.");
+        } else {
+            return redirect('/databases')->with('status', "{$db_name} veritabanı yedeği alınmadı. Periyot zamanı dolmadı");
         }
 
-        // veritabanı .sql dosyasını yedek alma
-        $backupSqlFile = "app/public/backup/{$db_name}_backup.sql";
-        $backupSqlFilePath = storage_path($backupSqlFile);
-        $command = "mysqldump --user={$user} --password={$password} --host={$host} --port={$port} {$db_name} > {$backupSqlFilePath}";
-        shell_exec($command);
-
-        // yedeklenen veritabanını tar.gz olarak sıkıştırıp .sql yedek dosyasını silme
-        $backupTarGzFile = "app/public/backup/{$backupDate[0]}_{$backupDateTime[0]}-{$backupDateTime[1]}_{$db_name}_backup.tar.gz";
-        $backupTarGzFileDir = "C:/Users/Emre/Desktop/backup/storage/app/public/backup";
-        $backupTarGzFilePath = storage_path($backupTarGzFile);
-        $command = "tar -czvf {$backupTarGzFilePath} --directory={$backupTarGzFileDir} {$db_name}_backup.sql";
-        shell_exec($command);
-        File::delete($backupSqlFilePath);
-    
-        return redirect('/databases')->with('status', "{$db_name} veritabanı yedeği alındı.");
     }
 
     public function notFound() {
