@@ -5,6 +5,7 @@ use App\Http\Controllers\DatabaseController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LogsController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -41,6 +42,12 @@ Route::prefix('users')->group(function() {
     Route::post('/delete', [UserController::class, 'deleteUserById'])->name('users.delete');
     Route::get('/profile',[UserController::class, 'profile']);
     Route::fallback([UserController::class, 'notFound']);
+});
+// logs Routes
+Route::prefix('logs')->group(function() {
+    Route::get('/',[LogsController::class, 'getAllLogs']);
+    Route::post('/clear', [LogsController::class, 'clearLogs'])->name('logs.clear');
+    Route::fallback([LogsController::class, 'notFound']);
 });
 });
 

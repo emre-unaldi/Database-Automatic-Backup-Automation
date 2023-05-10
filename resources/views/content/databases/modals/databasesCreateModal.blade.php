@@ -1,13 +1,3 @@
-@php
-$clusterFilter = [];
-
-foreach($clusters as $item) {
-if(!in_array($item->cluster, $clusterFilter)) {
-array_push($clusterFilter, $item->cluster);
-}
-}
-@endphp
-
 <!-- Database Add Modal -->
 <div class="modal fade" id="databaseAddModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
@@ -22,11 +12,11 @@ array_push($clusterFilter, $item->cluster);
           <div class="row g-2">
             <div class="col mb-2">
               <label for="c_name" class="form-label">Cluster Name</label>
-              <select class="form-select" id="c_name" name="c_name" onchange="setClusterOnChange()" aria-label="Default select example">
+              <select class="form-select" id="c_name" name="c_name" onchange="setClusterChangeHandle()" aria-label="Default select example">
                 <option>No Clusters</option>
-                @foreach($clusterFilter as $cluster)
-                <option value="{{ $cluster }}">{{ $cluster }}</option>
-                @endforeach
+                  @foreach($clusterFilter as $cluster)
+                    <option value="{{ $cluster }}">{{ $cluster }}</option>
+                  @endforeach
               </select>
             </div>
             <div class="col mb-2">
@@ -62,23 +52,17 @@ array_push($clusterFilter, $item->cluster);
           </div>
           <div class="row g-2">
             <div class="col mb-2">
-              <label for="last_backup" class="form-label">Last Backup</label>
-              <input type="text" id="last_backup" name="last_backup" class="form-control" placeholder="...">
+              <label for="backup_max_count" class="form-label">Backup Max Count</label>
+              <div class="input-group">
+                <input type="number" id="backup_max_count" name="backup_max_count" class="form-control" placeholder=".." aria-describedby="backup_max_count" aria-label="backup_max_count" />
+                <span class="input-group-text" id="backup_max_count">Records</span>
+              </div>
             </div>
             <div class="col mb-2">
               <label for="period_hour" class="form-label">Period Hour</label>
               <div class="input-group">
                 <input type="number" id="period_hour" name="period_hour" class="form-control" placeholder=".." aria-describedby="period_hour" aria-label="period_hour" />
                 <span class="input-group-text" id="period_hour">Hour</span>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col mb-2">
-              <label for="backup_max_count" class="form-label">Backup Max Count</label>
-              <div class="input-group">
-                <input type="number" id="backup_max_count" name="backup_max_count" class="form-control" placeholder=".." aria-describedby="backup_max_count" aria-label="backup_max_count" />
-                <span class="input-group-text" id="backup_max_count">Records</span>
               </div>
             </div>
           </div>
@@ -92,45 +76,3 @@ array_push($clusterFilter, $item->cluster);
   </div>
 </div>
 <!-- Database Add Modal -->
-
-<script>
-  const setClusterOnChange = (e) => {
-    const clusters = <?php echo json_encode($clusters);  ?>;
-    const c_name = document.getElementById('c_name');
-    const ip = document.getElementById('ip');
-    const port = document.getElementById('port');
-    const user = document.getElementById('user');
-    const password = document.getElementsByClassName('getPassword')[0];
-    const selectedCluster = document.getElementById('selectedCluster');
-    const empty = '';
-
-    for (var i = 0; i < clusters.length; i++) {
-      if (clusters[i].cluster === c_name.value) {
-        ip.value = clusters[i].ip;
-        port.value = clusters[i].port;
-        user.value = clusters[i].user;
-        password.value = clusters[i].password;
-        selectedCluster.value = true;
-
-        ip.disabled = true;
-        port.disabled = true;
-        user.disabled = true;
-        password.disabled = true;
-
-        break;
-      } else {
-        ip.value = empty;
-        port.value = empty;
-        user.value = empty;
-        password.value = empty;
-        selectedCluster.value = false;
-
-        ip.disabled = false;
-        port.disabled = false;
-        user.disabled = false;
-        password.disabled = false;
-
-      }
-    }
-  }
-</script>

@@ -13,18 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('databases', function (Blueprint $table) {
+        Schema::create('logs', function (Blueprint $table) {
             $table->id();
             $table->string('c_name')->nullable();
-            $table->string('c_id')->nullable();
             $table->string('db_name')->nullable();
-            $table->string('ip')->nullable();
-            $table->integer('port')->nullable();
-            $table->string('user')->nullable();
-            $table->string('password')->nullable();
-            $table->string('backup_max_count')->nullable();
             $table->string('last_backup')->nullable();
-            $table->string('period_hour')->nullable();
+            $table->string('message')->nullable();
+            $table->string('status')->nullable();
             $table->timestamps();
         });
     }
@@ -36,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('databases');
+        Schema::dropIfExists('logs');
     }
 };

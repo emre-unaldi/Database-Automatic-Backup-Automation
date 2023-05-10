@@ -44,14 +44,11 @@
           </td>
           <td>{{$cluster->description}}</td>
           <td class="d-flex justify-content-start">
-            <!-- Clusters Delete Button -->
-            <form class="pe-2" action="{{ route('clusters.delete', ['id'=>$cluster->id]) }}" method="POST">
-              @csrf
-              <button type="submit" class="btn btn-icon btn-danger">
+            <!-- Clusters Delete Modal Open Button -->
+              <button type="submit" class="btn btn-icon btn-danger me-2" data-route="{{route('clusters.delete', ['id'=> $cluster->id]) }}" data-bs-toggle="modal" data-bs-target="#clusterBackDropModal">
                 <span class="tf-icons bx bx-trash"></span>
               </button>
-            </form>
-            <!-- Clusters Delete Button -->
+            <!-- Clusters Delete Modal Open Button -->
             <!-- Cluster Update Modal Open Button -->
             <button type="button" class="btn btn-icon btn-primary" onclick="getClusters('{{$cluster->id}}')" data-bs-toggle="modal" data-bs-target="#clusterUpdateModal">
               <span class="tf-icons bx bx-edit-alt"></span>
@@ -62,7 +59,13 @@
         @endforeach
         @else
         <tr>
-          <td><b>Cluster Data Not Found !</b></td>
+          <td><i>no data</i></th>
+          <td><i>no data</i></th>
+          <td><i>no data</i></th>
+          <td><i>no data</i></th>
+          <td><i>no data</i></th>
+          <td><i>no data</i></th>
+          <td><i>no data</i></th>
         </tr>
         @endif
       </tbody>
@@ -71,6 +74,10 @@
   </div>
 </div>
 <!--/ Clusters Table -->
+
+<!-- Cluster Delete Modal -->
+@include('content/clusters/modals/clustersDeleteModal')
+<!-- Cluster DElete Modal -->
 
 <!-- Cluster Add Modal -->
 @include('content/clusters/modals/clustersCreateModal')
@@ -84,7 +91,7 @@
   $('#clustersTable').DataTable({
     dom: '<"top"lBf>rt<"bottom"ip><"clear">',
     buttons: [
-      'excel', 'pdf', 'print'
+      'pdf', 'print'
     ]
   });
 
@@ -99,13 +106,24 @@
     const u_password = document.getElementById('u_password');
     const u_clusters_id = document.getElementById('u_clusters_id')
 
+    console.log(getClusters);
+
     u_ip.setAttribute('value', getClusters.ip)
     u_port.setAttribute('value', getClusters.port)
     u_cluster.setAttribute('value', getClusters.cluster)
-    u_description.setAttribute('value', getClusters.description)
+    u_description.setAttribute('value', getClusters.description === null ? '' : getClusters.description)
     u_user.setAttribute('value', getClusters.user)
-    u_password.setAttribute('value', getClusters.password)
+    u_password.setAttribute('value', getClusters.password === null ? '' : getClusters.password)
     u_clusters_id.setAttribute('value', id)
   }
+
+    // Submit route parameter to cluster deletion form
+    const clusterBackDropModal = document.getElementById('clusterBackDropModal');
+    clusterBackDropModal.addEventListener('show.bs.modal', (event) => {
+      const modalOpenButton = event.relatedTarget
+      const clusterDeleteRoute = modalOpenButton.getAttribute('data-route')
+      const clusterDeleteForm = clusterBackDropModal.querySelector('#clusterDeleteForm')
+      clusterDeleteForm.action = clusterDeleteRoute
+  })
 </script>
 @endsection

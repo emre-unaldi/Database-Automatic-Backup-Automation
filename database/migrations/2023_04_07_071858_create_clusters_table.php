@@ -15,12 +15,12 @@ return new class extends Migration
     {
         Schema::create('clusters', function (Blueprint $table) {
             $table->id();
-            $table->string('cluster');
-            $table->string('ip');
-            $table->integer('port');
-            $table->string('user');
-            $table->string('password');
-            $table->string('description');
+            $table->string('cluster')->nullable();
+            $table->string('ip')->nullable();
+            $table->integer('port')->nullable();
+            $table->string('user')->nullable();
+            $table->string('password')->nullable();
+            $table->string('description')->nullable();
             $table->timestamps();
         });
     }
