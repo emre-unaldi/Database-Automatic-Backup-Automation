@@ -14,6 +14,15 @@
 <script src="{{asset('assets/js/dashboards-analytics.js')}}"></script>
 @endsection
 
+<!--  -->
+@php
+  $clusterArray = [];
+  foreach($clusters as $item) {
+      array_push($clusterArray, $item->cluster);
+    }
+@endphp
+<!--  -->
+
 @section('content')
 <div class="row">
   <div class="col-lg-12 mb-4 order-0">
@@ -41,8 +50,8 @@
     <div class="card h-100">
       <div class="card-header d-flex align-items-center justify-content-between pb-0">
         <div class="card-title mb-0">
-          <h5 class="m-0 me-2">Order Statistics</h5>
-          <small class="text-muted">42.82k Total Sales</small>
+          <h5 class="m-0 me-2">Database Backup Statistics</h5>
+          <small class="text-muted">{{ count($logs) }} Total Database Backup</small>
         </div>
         <div class="dropdown">
           <button class="btn p-0" type="button" id="orederStatistics" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -58,65 +67,39 @@
       <div class="card-body">
         <div class="d-flex justify-content-between align-items-center mb-3">
           <div class="d-flex flex-column align-items-center gap-1">
-            <h2 class="mb-2">8,258</h2>
-            <span>Total Orders</span>
+            <h2 class="mb-2">{{ count($databases) }}</h2>
+            <span>Current Total Databases</span>
           </div>
           <div id="orderStatisticsChart"></div>
         </div>
         <ul class="p-0 m-0">
           <li class="d-flex mb-4 pb-1">
             <div class="avatar flex-shrink-0 me-3">
-              <span class="avatar-initial rounded bg-label-primary"><i class='bx bx-mobile-alt'></i></span>
+              <span class="avatar-initial rounded bg-label-primary"><i class='bx bxs-cloud'></i></span>
             </div>
             <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-              <div class="me-2">
-                <h6 class="mb-0">Electronic</h6>
-                <small class="text-muted">Mobile, Earbuds, TV</small>
-              </div>
               <div class="user-progress">
-                <small class="fw-semibold">82.5k</small>
+                <small class="fw-semibold">{{ count($clusters) }} Cluster</small>
               </div>
             </div>
           </li>
           <li class="d-flex mb-4 pb-1">
             <div class="avatar flex-shrink-0 me-3">
-              <span class="avatar-initial rounded bg-label-success"><i class='bx bx-closet'></i></span>
+              <span class="avatar-initial rounded bg-label-info"><i class='bx bxs-data'></i></span>
             </div>
             <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-              <div class="me-2">
-                <h6 class="mb-0">Fashion</h6>
-                <small class="text-muted">T-shirt, Jeans, Shoes</small>
-              </div>
               <div class="user-progress">
-                <small class="fw-semibold">23.8k</small>
-              </div>
-            </div>
-          </li>
-          <li class="d-flex mb-4 pb-1">
-            <div class="avatar flex-shrink-0 me-3">
-              <span class="avatar-initial rounded bg-label-info"><i class='bx bx-home-alt'></i></span>
-            </div>
-            <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-              <div class="me-2">
-                <h6 class="mb-0">Decor</h6>
-                <small class="text-muted">Fine Art, Dining</small>
-              </div>
-              <div class="user-progress">
-                <small class="fw-semibold">849k</small>
+                <small class="fw-semibold">{{ count($databases) }} Database</small>
               </div>
             </div>
           </li>
           <li class="d-flex">
             <div class="avatar flex-shrink-0 me-3">
-              <span class="avatar-initial rounded bg-label-secondary"><i class='bx bx-football'></i></span>
+              <span class="avatar-initial rounded bg-label-secondary"><i class='bx bxs-user'></i></span>
             </div>
             <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-              <div class="me-2">
-                <h6 class="mb-0">Sports</h6>
-                <small class="text-muted">Football, Cricket Kit</small>
-              </div>
               <div class="user-progress">
-                <small class="fw-semibold">99</small>
+                <small class="fw-semibold">{{ count($users) }} Users</small>
               </div>
             </div>
           </li>
@@ -125,6 +108,87 @@
     </div>
   </div>
   <!--/ Order Statistics -->
-
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script>
+    (function () {
+    // Database Backup System Statistics Chart
+    // --------------------------------------------------------------------
+    let cardColor, headingColor, axisColor, shadeColor, borderColor;
+    const clusters = <?php echo json_encode($clusters); ?>;
+    const databases = <?php echo json_encode($databases); ?>;
+    const users = <?php echo json_encode($users); ?>;
+    const totalRecords = clusters.length + databases.length + users.length;
+
+
+    const chartOrderStatistics = document.querySelector('#orderStatisticsChart'),
+      orderChartConfig = {
+        chart: {
+          height: 165,
+          width: 130,
+          type: 'donut'
+        },
+        labels: ['Clusters', 'Databases', 'Users'],
+        series: [clusters.length, databases.length, users.length],
+        colors: [config.colors.primary, config.colors.secondary, config.colors.info, config.colors.success],
+        stroke: {
+          width: 5,
+          colors: cardColor
+        },
+        dataLabels: {
+          enabled: false,
+          formatter: function (val, opt) {
+            return parseInt(val) + '%';
+          }
+        },
+        legend: {
+          show: false
+        },
+        grid: {
+          padding: {
+            top: 0,
+            bottom: 0,
+            right: 15
+          }
+        },
+        plotOptions: {
+          pie: {
+            donut: {
+              size: '75%',
+              labels: {
+                show: true,
+                value: {
+                  fontSize: '1.5rem',
+                  fontFamily: 'Public Sans',
+                  color: headingColor,
+                  offsetY: -15,
+                  formatter: function (val) {
+                    return parseInt(val) + '%';
+                  }
+                },
+                name: {
+                  offsetY: 20,
+                  fontFamily: 'Public Sans'
+                },
+                total: {
+                  show: true,
+                  fontSize: '0.8125rem',
+                  color: axisColor,
+                  label: 'Records',
+                  formatter: function (w) {
+                    return `${totalRecords} %`;
+                  }
+                }
+              }
+            }
+          }
+        }
+      };
+    if (typeof chartOrderStatistics !== undefined && chartOrderStatistics !== null) {
+      const statisticsChart = new ApexCharts(chartOrderStatistics, orderChartConfig);
+      statisticsChart.render();
+    }
+  })()
+</script>
 @endsection

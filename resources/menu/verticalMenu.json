@@ -2,7 +2,7 @@
   "menu": [
     {
       "name": "Dashboard",
-      "icon": "menu-icon tf-icons bx bx-home-circle",
+      "icon": "menu-icon tf-icons bx bxs-home",
       "slug": "dashboard-analytics",
       "url": "/"
     },
@@ -11,7 +11,7 @@
     },
     {
       "name": "Clusters",
-      "icon": "menu-icon tf-icons bx bxs-data",
+      "icon": "menu-icon tf-icons bx bxs-cloud",
       "slug": "Clusters",
       "url": "/clusters"
     },
@@ -29,9 +29,18 @@
     },
     {
       "name": "Users",
-      "icon": "menu-icon tf-icons bx bxs-data",
+      "icon": "menu-icon tf-icons bx bxs-user",
       "slug": "Users",
       "url": "/users"
+    },
+    {
+      "menuHeader": "Logs"
+    },
+    {
+      "name": "Logs",
+      "icon": "menu-icon tf-icons bx bxs-log-in-circle",
+      "slug": "Logs",
+      "url": "/logs"
     }
   ]
 }

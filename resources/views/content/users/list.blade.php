@@ -4,6 +4,7 @@
   <span class="text-muted fw-light">Users</span>
 </h4>
 <!-- Users Table -->
+
 <div class="card p-2">
   <div class="table-responsive text-nowrap">
     <!-- Database Add Modal Open Button -->
@@ -42,14 +43,11 @@
             </div>
           </td>
           <td class="d-flex justify-content-start">
-            <!-- User Delete Button -->
-            <form class="pe-2" action="{{ route('users.delete', ['id'=>$user->id]) }}" method="POST">
-              @csrf
-              <button type="submit" class="btn btn-icon btn-danger">
+            <!-- User Delete Modal Open Button -->
+              <button type="submit" class="btn btn-icon btn-danger me-2" data-route="{{route('users.delete', ['id'=> $user->id]) }}" data-bs-toggle="modal" data-bs-target="#userBackDropModal">
                 <span class="tf-icons bx bx-trash"></span>
               </button>
-            </form>
-            <!-- User Delete Button -->
+            <!-- User Delete Modal Open Button -->
             <!-- User Update Modal Open Button -->
             <button type="button" class="btn btn-icon btn-primary" onclick="getUsers('{{$user->id}}')" data-bs-toggle="modal" data-bs-target="#userUpdateModal">
               <span class="tf-icons bx bx-edit-alt"></span>
@@ -60,7 +58,12 @@
         @endforeach
         @else
         <tr>
-          <td><b>User Data Not Found !</b></td>
+          <td><i>no data</i></th>
+          <td><i>no data</i></th>
+          <td><i>no data</i></th>
+          <td><i>no data</i></th>
+          <td><i>no data</i></th>
+          <td><i>no data</i></th>
         </tr>
         @endif
       </tbody>
@@ -69,6 +72,10 @@
   </div>
 </div>
 <!--/ Users Table -->
+
+<!-- User Delete Modal -->
+@include('content/users/modals/usersDeleteModal')
+<!-- User Delete Modal -->
 
 <!-- User Add Modal -->
 @include('content/users/modals/usersCreateModal')
@@ -83,18 +90,18 @@
   $('#usersTable').DataTable({
     dom: '<"top"lBf>rt<"bottom"ip><"clear">',
     buttons: [
-      'excel', 'pdf', 'print'
+      'pdf', 'print'
     ]
-  });
+  })
 
   const getUsers = (id) => {
     const users = <?php echo json_encode($users);  ?>;
     const getUser = users.find((item) => item?.id == id)
-    const u_name = document.getElementById('u_name');
-    const u_surname = document.getElementById('u_surname');
-    const u_phone = document.getElementById('u_phone');
-    const u_email = document.getElementById('u_email');
-    const u_password = document.getElementById('u_password');
+    const u_name = document.getElementById('u_name')
+    const u_surname = document.getElementById('u_surname')
+    const u_phone = document.getElementById('u_phone')
+    const u_email = document.getElementById('u_email')
+    const u_password = document.getElementById('u_password')
     const u_user_id = document.getElementById('u_user_id')
 
     u_name.setAttribute('value', getUser.name)
@@ -104,5 +111,14 @@
     u_password.setAttribute('value', getUser.decryptPassword)
     u_user_id.setAttribute('value', id)
   }
+
+  // Submit route parameter to user deletion form
+  const userBackDropModal = document.getElementById('userBackDropModal');
+  userBackDropModal.addEventListener('show.bs.modal', (event) => {
+    const modalOpenButton = event.relatedTarget
+    const userDeleteRoute = modalOpenButton.getAttribute('data-route')
+    const userDeleteForm = userBackDropModal.querySelector('#userDeleteForm')
+    userDeleteForm.action = userDeleteRoute
+  })
 </script>
 @endsection
