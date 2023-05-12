@@ -13,13 +13,23 @@
 <!-- Databases Table -->
 <div class="card p-2">
   <div class="table-responsive text-nowrap">
-    <!-- Database Add Modal Open Button -->
     <div class="d-flex justify-content-end">
+      <!-- FTP Backup Button -->
+      <!--
+      <form action="{{ route('ftp.upload') }}" method="POST">
+        @csrf
+        <button type="submit" name="submit" class="btn btn-icon btn-primary w-auto ps-2 pe-2">
+          <span class="tf-icons bx bxs-data"></span>FTP Upload
+        </button>
+      </form>
+      -->
+      <!-- FTP Backup Button -->
+      <!-- Database Add Modal Open Button -->
       <button type="button" class="btn btn-icon btn-success" data-bs-toggle="modal" data-bs-target="#databaseAddModal">
         <span class="tf-icons bx bx-plus-medical"></span>
       </button>
+      <!-- Database Add Modal Open Button -->
     </div>
-    <!-- Database Add Modal Open Button -->
     <table id="databasesTable" class="table table-striped">
       <thead>
         <tr>
@@ -102,12 +112,12 @@
 
 <!-- Clusters Select Filter -->
 @php
-  $clusterFilter = [];
-    foreach($clusters as $item) {
-      if(!in_array($item->cluster, $clusterFilter)) {
-        array_push($clusterFilter, $item->cluster);
-      }
-  }
+$clusterFilter = [];
+foreach($clusters as $item) {
+if(!in_array($item->cluster, $clusterFilter)) {
+array_push($clusterFilter, $item->cluster);
+}
+}
 @endphp
 <!-- Clusters Select Filter -->
 
@@ -275,4 +285,3 @@
   })
 </script>
 @endsection
-

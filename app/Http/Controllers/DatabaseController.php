@@ -68,35 +68,15 @@ class DatabaseController extends Controller
 
     public function backupDatabaseById(Request $request)
     {
+        // get database by id 
         $databases = Databases::find($request->id);
-        $logs = new Logs();
-        $isCluster = $databases->cluster;
 
-        // check if database cluster exists
-        if ($isCluster) {
-            // get record with cluster
-            $ip = $isCluster->ip;
-            $port = $isCluster->port;
-            $user = $isCluster->user;
-            $password = $isCluster->password;
-        } else {
-            // get record with database
-            $ip = $databases->ip;
-            $port = $databases->port;
-            $user = $databases->user;
-            $password = $databases->password;
-        }
-
-        $db_name = $databases->db_name;
-        $c_name = $databases->c_name;
-        $backup_max_count = $databases->backup_max_count;
+        // get last backup time and period
         $last_backup = $databases->last_backup;
         $period_hour = explode(' ', $databases->period_hour)[0];
 
-        // Create day-month-year hour-minute for filename
+        // get current date and time
         $dateTimeNow = new DateTime();
-        $backupDate = $dateTimeNow->format('d') . '-' . $dateTimeNow->format('m') . '-' . $dateTimeNow->format('Y');
-        $backupTime = $dateTimeNow->format('H') . '-' . $dateTimeNow->format('i');
 
         // Get the difference between last_backup and current time for period hour calculation
         $lastBackupFormated = new DateTime($last_backup);
@@ -106,10 +86,39 @@ class DatabaseController extends Controller
         if ($request->trigger === 'manual') {
             $periodCheck = true;
         } else {
-            $periodCheck = $dateTimeDiff->i >= intval($period_hour);
+            // period control
+            $periodCheck = $dateTimeDiff->h >= intval($period_hour);
         }
 
         if ($periodCheck || $last_backup == null) {
+            
+            $logs = new Logs();
+
+            // get database name, cluster name and max count backup
+            $db_name = $databases->db_name;
+            $c_name = $databases->c_name;
+            $backup_max_count = $databases->backup_max_count;
+
+            // Create day-month-year hour-minute for filename
+            $backupDate = $dateTimeNow->format('d') . '-' . $dateTimeNow->format('m') . '-' . $dateTimeNow->format('Y');
+            $backupTime = $dateTimeNow->format('H') . '-' . $dateTimeNow->format('i');
+
+            // check if the database has a cluster and accordingly create variable
+            $isCluster = $databases->cluster;
+            if ($isCluster) {
+                // get record with cluster
+                $ip = $isCluster->ip;
+                $port = $isCluster->port;
+                $user = $isCluster->user;
+                $password = $isCluster->password;
+            } else {
+                // get record with database
+                $ip = $databases->ip;
+                $port = $databases->port;
+                $user = $databases->user;
+                $password = $databases->password;
+            }
+
             // find the files of the database
             $backupPath = storage_path('app/public/backup');
             $files = File::glob($backupPath . '/*_' . $db_name . '_backup.tar.gz');
@@ -119,6 +128,12 @@ class DatabaseController extends Controller
             // check database backup hold count and delete file
             if (!empty($files) && count($files) >= intval($backup_max_count)) {
                 $oldestFile = array_keys($files)[count($files) - 1];
+
+                // delete file from FTP
+                $ftpController = new FtpController();
+                $request = new Request(['tarFile' => $oldestFile]);
+                $ftpController->deleteFromFtp($request);
+
                 File::delete($oldestFile);
             }
 
@@ -165,15 +180,20 @@ class DatabaseController extends Controller
                             // tar.gz file created check file size
                             if (file_exists($backupTarGzFilePath)) {
                                 if (filesize($backupTarGzFilePath) > 0) {
-
                                     // save the last backup date
                                     $databases->last_backup = $dateTimeNow;
                                     $databases->save();
 
+                                    File::delete($backupSqlFilePath);
+
+                                    // FTP file upload
+                                    $ftpController = new FtpController();
+                                    $request = new Request(['tarFile' => $backupTarGzFile]);
+                                    $ftpController->uploadToFtp($request);
+
                                     $info = ['message' => "{$db_name} database sql file created and backup saved ✓", 'success' => true];
                                     $logs->message = $info['message'];
                                     $logs->status = $info['success'];
-                                    File::delete($backupSqlFilePath);
                                 } else {
                                     $info = ['message' => "The database sql file {$db_name} was created but the backup could not be saved. The backup file was deleted because it was empty ×", 'success' => false];
                                     $logs->message = $info['message'];
@@ -206,7 +226,7 @@ class DatabaseController extends Controller
 
             return redirect('/databases')->with('status', $info);
         } else {
-            $info = ['message' => "{$db_name} veritabanı yedeği alınmadı. Periyot zamanı dolmadı", 'success' => false];
+            $info = ['message' => "{$databases->db_name} veritabanı yedeği alınmadı. Periyot zamanı dolmadı", 'success' => false];
             return redirect('/databases')->with('status', $info);
         }
     }
