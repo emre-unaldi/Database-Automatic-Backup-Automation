@@ -138,6 +138,12 @@ class DatabaseController extends Controller
             }
 
             // reading .sql file from database
+            $backupFolderPath = storage_path('app/public/backup');
+
+            if (!File::exists($backupFolderPath)) {
+                File::makeDirectory($backupFolderPath);
+            }
+            
             $backupSqlFile = "app/public/backup/{$db_name}_backup.sql";
             $backupSqlFilePath = storage_path($backupSqlFile);
             $command = "mysqldump --single-transaction --user={$user} --password={$password} --host={$ip} --port={$port} {$db_name}";
